@@ -31,6 +31,7 @@ struct BlockedProfilePhysicalUnblockSelector: View {
           title: "NFC Tags",
           description: "Set one or more NFC tags that can only unblock this profile when active",
           systemImage: "wave.3.right.circle.fill",
+          assetImage: "NFCStickerLogo",
           items: nfcItems,
           emptyButtonTitle: "Set",
           addButtonTitle: "Add Tag",
@@ -38,10 +39,11 @@ struct BlockedProfilePhysicalUnblockSelector: View {
         )
 
         physicalUnblockColumn(
-          title: "QR/Barcode Code",
+          title: "QR/Barcode",
           description:
-            "Set one or more QR/Barcode codes that can only unblock this profile when active",
+            "Set one or more QR/Barcodes that can only unblock this profile when active",
           systemImage: "qrcode.viewfinder",
+          assetImage: "QRStickerLogo",
           items: qrItems,
           emptyButtonTitle: "Set",
           addButtonTitle: "Add Code",
@@ -95,6 +97,7 @@ struct BlockedProfilePhysicalUnblockSelector: View {
     title: String,
     description: String,
     systemImage: String,
+    assetImage: String? = nil,
     items: [PhysicalUnblockItem],
     emptyButtonTitle: String,
     addButtonTitle: String,
@@ -102,9 +105,16 @@ struct BlockedProfilePhysicalUnblockSelector: View {
   ) -> some View {
     VStack(spacing: 16) {
       VStack(spacing: 10) {
-        Image(systemName: systemImage)
-          .font(.title2)
-          .foregroundColor(.secondary)
+        if let assetImage = assetImage {
+          Image(assetImage)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 34, height: 34)
+        } else {
+          Image(systemName: systemImage)
+            .font(.title2)
+            .foregroundColor(.gray)
+        }
 
         HStack(spacing: 6) {
           Text(title)
@@ -145,13 +155,6 @@ struct BlockedProfilePhysicalUnblockSelector: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     .padding(.top, 12)
     .padding(.bottom, 8)
-    .padding(.horizontal, 12)
-    .glassSurface(
-      cornerRadius: 22,
-      tint: themeManager.themeColor,
-      strokeOpacity: 0.1,
-      shadowOpacity: 0.04
-    )
     .opacity(disabled ? 0.5 : 1)
   }
 
@@ -196,11 +199,13 @@ struct BlockedProfilePhysicalUnblockSelector: View {
     .padding(.horizontal, 14)
     .padding(.vertical, 10)
     .frame(maxWidth: .infinity)
-    .glassSurface(
-      cornerRadius: 16,
-      tint: themeManager.themeColor,
-      strokeOpacity: 0.1,
-      shadowOpacity: 0.03
+    .background(
+      RoundedRectangle(cornerRadius: 16)
+        .fill(.thinMaterial)
+        .overlay(
+          RoundedRectangle(cornerRadius: 16)
+            .stroke(Color.primary.opacity(0.2), lineWidth: 1)
+        )
     )
   }
 
@@ -216,11 +221,13 @@ struct BlockedProfilePhysicalUnblockSelector: View {
       }
       .frame(maxWidth: .infinity)
       .padding(.vertical, 12)
-      .glassSurface(
-        cornerRadius: 16,
-        tint: themeManager.themeColor,
-        strokeOpacity: 0.08,
-        shadowOpacity: 0.03
+      .background(
+        RoundedRectangle(cornerRadius: 16)
+          .fill(.thinMaterial)
+          .overlay(
+            RoundedRectangle(cornerRadius: 16)
+              .stroke(Color.primary.opacity(0.2), lineWidth: 1)
+          )
       )
     }
     .buttonStyle(.plain)

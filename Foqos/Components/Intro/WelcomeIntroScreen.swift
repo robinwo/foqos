@@ -1,94 +1,102 @@
 import SwiftUI
 
-let orbitOffset: CGFloat = 145
+private let orbitOffset: CGFloat = 154
 
 struct WelcomeIntroScreen: View {
+  @EnvironmentObject private var themeManager: ThemeManager
+
   @State private var logoScale: CGFloat = 0.5
   @State private var showContent: Bool = false
   @State private var showIcons: Bool = false
   @State private var orbitRotation: Double = 0
 
   var body: some View {
-    ZStack {
-      GlassPageBackground()
+    VStack(spacing: 0) {
+      // Heading
+      VStack(spacing: 8) {
+        Text("Welcome to Pause")
+          .font(.system(size: 34, weight: .bold))
+          .foregroundColor(.primary)
+          .opacity(showContent ? 1 : 0)
+          .offset(y: showContent ? 0 : -20)
 
-      VStack(spacing: 0) {
-        VStack(spacing: 8) {
-          Text("Welcome to Pause")
-            .font(.system(size: 34, weight: .bold))
-            .foregroundColor(.primary)
-            .opacity(showContent ? 1 : 0)
-            .offset(y: showContent ? 0 : -20)
-
-          Text("Live your best life with focus and intention.")
-            .font(.system(size: 16))
-            .foregroundColor(.secondary)
-            .opacity(showContent ? 1 : 0)
-            .offset(y: showContent ? 0 : -20)
-        }
-
-        Spacer()
-
-        ZStack {
-          Image("NFCLogo")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 50, height: 50)
-            .offset(x: orbitOffset)
-            .rotationEffect(.degrees(orbitRotation))
-            .opacity(showIcons ? 1 : 0)
-
-          Image("BarcodeIcon")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 50, height: 50)
-            .offset(x: orbitOffset)
-            .rotationEffect(.degrees(orbitRotation + 90))
-            .opacity(showIcons ? 1 : 0)
-
-          Image("QRCodeLogo")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 50, height: 50)
-            .offset(x: orbitOffset)
-            .rotationEffect(.degrees(orbitRotation + 180))
-            .opacity(showIcons ? 1 : 0)
-
-          Image("ScheduleIcon")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 50, height: 50)
-            .offset(x: orbitOffset)
-            .rotationEffect(.degrees(orbitRotation + 270))
-            .opacity(showIcons ? 1 : 0)
-
-          Image("3DFoqosLogo")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 200, height: 200)
-            .scaleEffect(logoScale)
-            .opacity(showContent ? 1 : 0)
-        }
-        .frame(height: 360)
-
-        Spacer()
-
-        VStack(spacing: 12) {
-          Text(
-            "No need to waste hundreds on gimmicky plastic bricks and overpriced metal cards."
-          )
-          .font(.system(size: 18, weight: .medium))
+        Text("Live your best life with focus and intention.")
+          .font(.system(size: 16))
           .foregroundColor(.secondary)
-          .multilineTextAlignment(.center)
-          .lineSpacing(4)
-        }
-        .padding(.horizontal, 15)
-        .padding(.vertical, 20)
-        .glassSurface(cornerRadius: 28, strokeOpacity: 0.1, shadowOpacity: 0.05)
-        .padding(.horizontal, 15)
-        .opacity(showContent ? 1 : 0)
-        .offset(y: showContent ? 0 : 20)
+          .opacity(showContent ? 1 : 0)
+          .offset(y: showContent ? 0 : -20)
       }
+
+      Spacer()
+
+      // Logo container with orbiting stickers
+      ZStack {
+        // Orbiting NFC sticker (0 degrees)
+        Image("NFCStickerLogo")
+          .resizable()
+          .scaledToFit()
+          .frame(width: 52, height: 52)
+          .shadow(color: themeManager.themeColor.opacity(0.18), radius: 8, y: 4)
+          .offset(x: orbitOffset)
+          .rotationEffect(.degrees(orbitRotation))
+          .opacity(showIcons ? 1 : 0)
+
+        // Orbiting QR sticker (90 degrees)
+        Image("QRStickerLogo")
+          .resizable()
+          .scaledToFit()
+          .frame(width: 52, height: 52)
+          .shadow(color: themeManager.themeColor.opacity(0.18), radius: 8, y: 4)
+          .offset(x: orbitOffset)
+          .rotationEffect(.degrees(orbitRotation + 90))
+          .opacity(showIcons ? 1 : 0)
+
+        // Orbiting barcode sticker (180 degrees)
+        Image("BarcodeSticker")
+          .resizable()
+          .scaledToFit()
+          .frame(width: 52, height: 52)
+          .shadow(color: themeManager.themeColor.opacity(0.18), radius: 8, y: 4)
+          .offset(x: orbitOffset)
+          .rotationEffect(.degrees(orbitRotation + 180))
+          .opacity(showIcons ? 1 : 0)
+
+        // Orbiting timer sticker (270 degrees)
+        Image("TimerSticker")
+          .resizable()
+          .scaledToFit()
+          .frame(width: 52, height: 52)
+          .shadow(color: themeManager.themeColor.opacity(0.18), radius: 8, y: 4)
+          .offset(x: orbitOffset)
+          .rotationEffect(.degrees(orbitRotation + 270))
+          .opacity(showIcons ? 1 : 0)
+
+        // Foqos sticker logo (center/sun)
+        Image("FoqosStickerLogo")
+          .resizable()
+          .scaledToFit()
+          .frame(width: 210, height: 210)
+          .scaleEffect(logoScale)
+          .shadow(color: themeManager.themeColor.opacity(0.22), radius: 18, y: 10)
+          .opacity(showContent ? 1 : 0)
+      }
+      .frame(height: 360)
+
+      Spacer()
+
+      // Message text
+      VStack(spacing: 12) {
+        Text(
+          "No need to waste hundreds on gimmicky plastic bricks and overpriced metal cards."
+        )
+        .font(.system(size: 18, weight: .medium))
+        .foregroundColor(.secondary)
+        .multilineTextAlignment(.center)
+        .lineSpacing(4)
+      }
+      .padding(.horizontal, 15)
+      .opacity(showContent ? 1 : 0)
+      .offset(y: showContent ? 0 : 20)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .onAppear {
@@ -117,4 +125,6 @@ struct WelcomeIntroScreen: View {
 
 #Preview {
   WelcomeIntroScreen()
+    .background(Color(.systemBackground))
+    .environmentObject(ThemeManager.shared)
 }
