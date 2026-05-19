@@ -104,7 +104,7 @@ struct BlockedProfilePhysicalUnblockSelector: View {
       VStack(spacing: 10) {
         Image(systemName: systemImage)
           .font(.title2)
-          .foregroundColor(.gray)
+          .foregroundColor(.secondary)
 
         HStack(spacing: 6) {
           Text(title)
@@ -145,6 +145,13 @@ struct BlockedProfilePhysicalUnblockSelector: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     .padding(.top, 12)
     .padding(.bottom, 8)
+    .padding(.horizontal, 12)
+    .glassSurface(
+      cornerRadius: 22,
+      tint: themeManager.themeColor,
+      strokeOpacity: 0.1,
+      shadowOpacity: 0.04
+    )
     .opacity(disabled ? 0.5 : 1)
   }
 
@@ -189,13 +196,11 @@ struct BlockedProfilePhysicalUnblockSelector: View {
     .padding(.horizontal, 14)
     .padding(.vertical, 10)
     .frame(maxWidth: .infinity)
-    .background(
-      RoundedRectangle(cornerRadius: 16)
-        .fill(.thinMaterial)
-        .overlay(
-          RoundedRectangle(cornerRadius: 16)
-            .stroke(Color.primary.opacity(0.2), lineWidth: 1)
-        )
+    .glassSurface(
+      cornerRadius: 16,
+      tint: themeManager.themeColor,
+      strokeOpacity: 0.1,
+      shadowOpacity: 0.03
     )
   }
 
@@ -211,13 +216,11 @@ struct BlockedProfilePhysicalUnblockSelector: View {
       }
       .frame(maxWidth: .infinity)
       .padding(.vertical, 12)
-      .background(
-        RoundedRectangle(cornerRadius: 16)
-          .fill(.thinMaterial)
-          .overlay(
-            RoundedRectangle(cornerRadius: 16)
-              .stroke(Color.primary.opacity(0.2), lineWidth: 1)
-          )
+      .glassSurface(
+        cornerRadius: 16,
+        tint: themeManager.themeColor,
+        strokeOpacity: 0.08,
+        shadowOpacity: 0.03
       )
     }
     .buttonStyle(.plain)

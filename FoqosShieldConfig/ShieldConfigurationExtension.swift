@@ -39,32 +39,30 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
   private func createCustomShieldConfiguration(for type: BlockedContentType, title: String)
     -> ShieldConfiguration
   {
-    // Get user's selected theme color
     let brandColor = UIColor(ThemeManager.shared.themeColor)
-
-    // Get random fun message
     let randomMessage = getFunBlockMessage(for: type, title: title)
-
-    // Emoji “icon” (rendered to an image so it works with ShieldConfiguration.icon)
     let emojiIcon = makeEmojiIcon(randomMessage.emoji, size: 96)
+    let matteBackground = UIColor(red: 0.93, green: 0.9, blue: 0.85, alpha: 1)
+    let titleColor = UIColor(red: 0.18, green: 0.17, blue: 0.16, alpha: 1)
+    let subtitleColor = UIColor(red: 0.35, green: 0.33, blue: 0.3, alpha: 1)
 
     return ShieldConfiguration(
-      backgroundBlurStyle: .dark,
-      backgroundColor: brandColor,
+      backgroundBlurStyle: .systemUltraThinMaterialLight,
+      backgroundColor: matteBackground,
       icon: emojiIcon,
       title: ShieldConfiguration.Label(
         text: randomMessage.title,
-        color: .white
+        color: titleColor
       ),
       subtitle: ShieldConfiguration.Label(
         text: randomMessage.subtitle,
-        color: UIColor.white.withAlphaComponent(0.88)
+        color: subtitleColor
       ),
       primaryButtonLabel: ShieldConfiguration.Label(
         text: randomMessage.buttonText,
-        color: .black
+        color: .white
       ),
-      primaryButtonBackgroundColor: .white,
+      primaryButtonBackgroundColor: brandColor,
       secondaryButtonLabel: nil
     )
   }

@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct GlassButton: View {
+  @EnvironmentObject var themeManager: ThemeManager
+
   let title: String
   let icon: String
   var fullWidth: Bool = true
@@ -60,15 +62,13 @@ struct GlassButton: View {
       minWidth: 0,
       maxWidth: fullWidth ? .infinity : (equalWidth ? .infinity : nil)
     )
-    .padding(.vertical, 12)
+    .padding(.vertical, 13)
     .padding(.horizontal, fullWidth ? nil : 24)
-    .background(
-      RoundedRectangle(cornerRadius: 16)
-        .fill(.thinMaterial)
-        .overlay(
-          RoundedRectangle(cornerRadius: 16)
-            .stroke((color ?? Color.primary).opacity(0.2), lineWidth: 1)
-        )
+    .glassSurface(
+      cornerRadius: 18,
+      tint: color ?? themeManager.themeColor,
+      strokeOpacity: 0.12,
+      shadowOpacity: 0.04
     )
     .foregroundColor(color ?? .primary)
   }

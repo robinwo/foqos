@@ -32,64 +32,70 @@ struct BlockedProfileDataExportView: View {
 
   var body: some View {
     NavigationStack {
-      Form {
-        Section(header: Text("Profiles")) {
-          if profiles.isEmpty {
-            Text("No profiles yet")
-              .foregroundStyle(.secondary)
-          } else {
-            ForEach(profiles) { profile in
-              let isSelected = selectedProfileIDs.contains(profile.id)
-              HStack {
-                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                  .foregroundStyle(isSelected ? .green : .secondary)
-                Text(profile.name)
-                Spacer()
+      ZStack {
+        GlassPageBackground()
+
+        Form {
+          Section(header: Text("Profiles")) {
+            if profiles.isEmpty {
+              Text("No profiles yet")
+                .foregroundStyle(.secondary)
+            } else {
+              ForEach(profiles) { profile in
+                let isSelected = selectedProfileIDs.contains(profile.id)
+                HStack {
+                  Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(isSelected ? .green : .secondary)
+                  Text(profile.name)
+                  Spacer()
+                }
+                .contentShape(Rectangle())
+                .onTapGesture { toggleSelection(for: profile.id) }
+                .accessibilityAddTraits(.isButton)
               }
-              .contentShape(Rectangle())
-              .onTapGesture { toggleSelection(for: profile.id) }
-              .accessibilityAddTraits(.isButton)
             }
           }
-        }
 
-        Section(
-          header: Text("Sorting"),
-          footer: Text("Controls the order of sessions in the CSV based on their start time.")
-        ) {
-          Picker("Sort order", selection: $sortDirection) {
-            Text("Ascending (oldest first)").tag(DataExportSortDirection.ascending)
-            Text("Descending (newest first)").tag(DataExportSortDirection.descending)
+          Section(
+            header: Text("Sorting"),
+            footer: Text("Controls the order of sessions in the CSV based on their start time.")
+          ) {
+            Picker("Sort order", selection: $sortDirection) {
+              Text("Ascending (oldest first)").tag(DataExportSortDirection.ascending)
+              Text("Descending (newest first)").tag(DataExportSortDirection.descending)
+            }
+            .pickerStyle(.menu)
           }
-          .pickerStyle(.menu)
-        }
 
-        Section(
-          header: Text("Date & Time"),
-          footer: Text(
-            "Choose how timestamps are exported. UTC is portable across tools. Local uses your device's time zone. All timestamps use ISO 8601."
-          )
-        ) {
-          Picker("Time zone", selection: $timeZone) {
-            Text("UTC").tag(DataExportTimeZone.utc)
-            Text("Local").tag(DataExportTimeZone.local)
+          Section(
+            header: Text("Date & Time"),
+            footer: Text(
+              "Choose how timestamps are exported. UTC is portable across tools. Local uses your device's time zone. All timestamps use ISO 8601."
+            )
+          ) {
+            Picker("Time zone", selection: $timeZone) {
+              Text("UTC").tag(DataExportTimeZone.utc)
+              Text("Local").tag(DataExportTimeZone.local)
+            }
+            .pickerStyle(.menu)
           }
-          .pickerStyle(.menu)
-        }
 
-        ActionButton(
-          title: "Export as CSV",
-          backgroundColor: themeManager.themeColor,
-          isLoading: isGenerating,
-          isDisabled: isExportDisabled
-        ) {
-          generateAndExport()
+          ActionButton(
+            title: "Export as CSV",
+            backgroundColor: themeManager.themeColor,
+            isLoading: isGenerating,
+            isDisabled: isExportDisabled
+          ) {
+            generateAndExport()
+          }
+          .listRowBackground(Color.clear)
+          .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
-        .listRowBackground(Color.clear)
-        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+        .scrollContentBackground(.hidden)
       }
       .navigationTitle("Export Data")
       .navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(.hidden, for: .navigationBar)
       .fileExporter(
         isPresented: $isExportPresented,
         document: exportDocument,
@@ -143,5 +149,6 @@ struct BlockedProfileDataExportView: View {
 
 #Preview {
   BlockedProfileDataExportView()
+    .environmentObject(ThemeManager.shared)
     .modelContainer(for: [BlockedProfiles.self, BlockedProfileSession.self], inMemory: true)
 }

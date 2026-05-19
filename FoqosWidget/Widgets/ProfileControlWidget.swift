@@ -19,19 +19,18 @@ struct ProfileControlWidget: Widget {
     ) { entry in
       ProfileWidgetEntryView(entry: entry)
         .containerBackground(for: .widget) {
-          // Use the entry's background color or clear if inactive
-          if entry.isSessionActive {
-            if entry.isPauseActive {
-              Color(red: 0.9, green: 0.7, blue: 0.0)
-            } else if entry.isBreakActive {
-              Color.orange
-            } else {
-              Color.green
-            }
+          if entry.isPauseActive {
+            Color(red: 0.82, green: 0.76, blue: 0.65)
+          } else if entry.isBreakActive {
+            Color(red: 0.79, green: 0.69, blue: 0.6)
+          } else if entry.isSessionActive {
+            Color(red: 0.56, green: 0.6, blue: 0.54)
+          } else {
+            Color(red: 0.93, green: 0.9, blue: 0.85)
           }
         }
     }
-    .configurationDisplayName("Foqos Profile")
+    .configurationDisplayName("Pause Profile")
     .description("Monitor and control your selected focus profile")
     .supportedFamilies([.systemSmall, .accessoryRectangular, .accessoryInline])
   }

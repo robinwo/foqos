@@ -25,9 +25,9 @@ struct ProfileIndicators: View {
 
   private func indicatorView(label: String) -> some View {
     HStack(spacing: 6) {
-      Circle()
-        .fill(Color.primary.opacity(0.85))
-        .frame(width: 6, height: 6)
+      Capsule(style: .continuous)
+        .fill(Color.primary.opacity(0.2))
+        .frame(width: 12, height: 6)
 
       Text(label)
         .font(.caption2)
@@ -52,5 +52,5 @@ struct ProfileIndicators: View {
     )
   }
   .padding()
-  .background(Color(.systemGroupedBackground))
+  .background(Color(hex: "#f3efe8"))
 }

@@ -48,16 +48,11 @@ struct ProfileTimerButton: View {
           .padding(.vertical, 10)
           .padding(.horizontal, 12)
           .frame(minWidth: 0, maxWidth: .infinity)
-          .background(
-            RoundedRectangle(cornerRadius: 16)
-              .fill(.thinMaterial)
-              .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                  .stroke(
-                    themeManager.themeColor.opacity(0.2),
-                    lineWidth: 1
-                  )
-              )
+          .glassSurface(
+            cornerRadius: 16,
+            tint: themeManager.themeColor,
+            strokeOpacity: 0.08,
+            shadowOpacity: 0.04
           )
 
           // Stop button (shown when showStopButton is true)
@@ -150,5 +145,4 @@ struct ProfileTimerButton: View {
     )
   }
   .padding()
-  .background(Color(.systemGroupedBackground))
 }

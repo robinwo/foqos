@@ -1,15 +1,18 @@
 import SwiftUI
 
 struct BlockingStrategyActionView: View {
-  @Environment(\.dismiss) private var dismiss
-
   var customView: (any View)?
 
   var body: some View {
-    VStack {
-      if let customViewToDisplay = customView {
-        AnyView(customViewToDisplay)
+    ZStack {
+      GlassPageBackground()
+
+      VStack {
+        if let customViewToDisplay = customView {
+          AnyView(customViewToDisplay)
+        }
       }
+      .padding()
     }
     .presentationDetents([.medium])
   }

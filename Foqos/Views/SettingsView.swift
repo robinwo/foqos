@@ -24,139 +24,150 @@ struct SettingsView: View {
 
   var body: some View {
     NavigationStack {
-      Form {
-        Section("Theme") {
-          HStack {
-            Image(systemName: "paintpalette.fill")
-              .foregroundStyle(themeManager.themeColor)
-              .font(.title3)
+      ZStack {
+        GlassPageBackground()
 
-            VStack(alignment: .leading, spacing: 2) {
-              Text("Appearance")
-                .font(.headline)
-              Text("Customize the look of your app")
-                .font(.caption)
+        Form {
+          Section("Theme") {
+            HStack {
+              Image(systemName: "paintpalette.fill")
+                .foregroundStyle(themeManager.themeColor)
+                .font(.title3)
+
+              VStack(alignment: .leading, spacing: 2) {
+                Text("Appearance")
+                  .font(.headline)
+                Text("Customize the look of your app")
+                  .font(.caption)
+                  .foregroundStyle(.secondary)
+              }
+            }
+            .padding(.vertical, 8)
+            .listRowBackground(Color.clear)
+
+            Picker("Theme Color", selection: $themeManager.selectedColorName) {
+              ForEach(ThemeManager.availableColors, id: \.name) { colorOption in
+                HStack {
+                  Circle()
+                    .fill(colorOption.color)
+                    .frame(width: 20, height: 20)
+                  Text(colorOption.name)
+                }
+                .tag(colorOption.name)
+              }
+            }
+            .onChange(of: themeManager.selectedColorName) { _, _ in
+              UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            }
+            .listRowBackground(Color.clear)
+          }
+
+          Section("About") {
+            HStack {
+              Text("Version")
+                .foregroundStyle(.primary)
+              Spacer()
+              Text("v\(appVersion)")
+                .foregroundStyle(.secondary)
+            }
+
+            HStack {
+              Text("Screen Time Access")
+                .foregroundStyle(.primary)
+              Spacer()
+              HStack {
+                Circle()
+                  .fill(requestAuthorizer.getAuthorizationStatus() == .approved ? .green : .red)
+                  .frame(width: 8, height: 8)
+                Text(
+                  requestAuthorizer.getAuthorizationStatus() == .approved
+                    ? "Authorized" : "Not Authorized"
+                )
+                .foregroundStyle(.secondary)
+                .font(.subheadline)
+              }
+            }
+
+            HStack {
+              Text("Made in")
+                .foregroundStyle(.primary)
+              Spacer()
+              Text("Calgary AB 🇨🇦")
                 .foregroundStyle(.secondary)
             }
           }
-          .padding(.vertical, 8)
+          .listRowBackground(Color.clear)
 
-          Picker("Theme Color", selection: $themeManager.selectedColorName) {
-            ForEach(ThemeManager.availableColors, id: \.name) { colorOption in
+          Section("Buy NFC Tags") {
+            Link(destination: URL(string: AMZN_STORE_LINK)!) {
               HStack {
-                Circle()
-                  .fill(colorOption.color)
-                  .frame(width: 20, height: 20)
-                Text(colorOption.name)
+                Text("Amazon")
+                  .foregroundColor(.primary)
+                Spacer()
+                Image(systemName: "arrow.up.right.square")
+                  .foregroundColor(.secondary)
               }
-              .tag(colorOption.name)
+            }
+            Link(destination: URL(string: TEMU_STORE_LINK)!) {
+              HStack {
+                Text("Temu")
+                  .foregroundColor(.primary)
+                Spacer()
+                Image(systemName: "arrow.up.right.square")
+                  .foregroundColor(.secondary)
+              }
+            }
+
+            Link(destination: URL(string: ALIEXPRESS_STORE_LINK)!) {
+              HStack {
+                Text("AliExpress")
+                  .foregroundColor(.primary)
+                Spacer()
+                Image(systemName: "arrow.up.right.square")
+                  .foregroundColor(.secondary)
+              }
             }
           }
-          .onChange(of: themeManager.selectedColorName) { _, _ in
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-          }
-        }
+          .listRowBackground(Color.clear)
 
-        Section("About") {
-          HStack {
-            Text("Version")
-              .foregroundStyle(.primary)
-            Spacer()
-            Text("v\(appVersion)")
-              .foregroundStyle(.secondary)
-          }
-
-          HStack {
-            Text("Screen Time Access")
-              .foregroundStyle(.primary)
-            Spacer()
-            HStack(spacing: 8) {
-              Circle()
-                .fill(requestAuthorizer.getAuthorizationStatus() == .approved ? .green : .red)
-                .frame(width: 8, height: 8)
-              Text(
-                requestAuthorizer.getAuthorizationStatus() == .approved
-                  ? "Authorized" : "Not Authorized"
-              )
-              .foregroundStyle(.secondary)
-              .font(.subheadline)
-            }
-          }
-
-          HStack {
-            Text("Made in")
-              .foregroundStyle(.primary)
-            Spacer()
-            Text("Calgary AB 🇨🇦")
-              .foregroundStyle(.secondary)
-          }
-        }
-
-        Section("Buy NFC Tags") {
-          Link(destination: URL(string: AMZN_STORE_LINK)!) {
+          Section("Help") {
             HStack {
-              Text("Amazon")
+              Text("Debug Mode")
                 .foregroundColor(.primary)
               Spacer()
-              Image(systemName: "arrow.up.right.square")
+              Image(systemName: "chevron.right")
                 .foregroundColor(.secondary)
+                .font(.caption)
             }
-          }
-          Link(destination: URL(string: TEMU_STORE_LINK)!) {
-            HStack {
-              Text("Temu")
-                .foregroundColor(.primary)
-              Spacer()
-              Image(systemName: "arrow.up.right.square")
-                .foregroundColor(.secondary)
+            .onTapGesture {
+              showDebugView = true
             }
-          }
 
-          Link(destination: URL(string: ALIEXPRESS_STORE_LINK)!) {
-            HStack {
-              Text("AliExpress")
-                .foregroundColor(.primary)
-              Spacer()
-              Image(systemName: "arrow.up.right.square")
-                .foregroundColor(.secondary)
+            Link(destination: URL(string: "https://www.foqos.app/blocking-native-apps.html")!) {
+              HStack {
+                Text("Blocking Native Apps")
+                  .foregroundColor(.primary)
+                Spacer()
+                Image(systemName: "arrow.up.right.square")
+                  .foregroundColor(.secondary)
+              }
+            }
+
+            if !strategyManager.isBlocking {
+              Button {
+                showResetBlockingStateAlert = true
+              } label: {
+                Text("Reset Blocking State")
+                  .foregroundColor(themeManager.themeColor)
+              }
             }
           }
+          .listRowBackground(Color.clear)
         }
-
-        Section("Help") {
-          HStack {
-            Text("Debug Mode")
-              .foregroundColor(.primary)
-            Spacer()
-            Image(systemName: "chevron.right")
-              .foregroundColor(.secondary)
-              .font(.caption)
-          }
-          .onTapGesture {
-            showDebugView = true
-          }
-
-          Link(destination: URL(string: "https://www.foqos.app/blocking-native-apps.html")!) {
-            HStack {
-              Text("Blocking Native Apps")
-                .foregroundColor(.primary)
-              Spacer()
-              Image(systemName: "arrow.up.right.square")
-                .foregroundColor(.secondary)
-            }
-          }
-
-          if !strategyManager.isBlocking {
-            Button {
-              showResetBlockingStateAlert = true
-            } label: {
-              Text("Reset Blocking State")
-                .foregroundColor(themeManager.themeColor)
-            }
-          }
-        }
+        .scrollContentBackground(.hidden)
       }
       .navigationTitle("Settings")
+      .toolbarBackground(.hidden, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button(action: { dismiss() }) {

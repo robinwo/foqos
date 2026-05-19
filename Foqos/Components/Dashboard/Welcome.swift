@@ -6,67 +6,45 @@ struct Welcome: View {
 
   var body: some View {
     Button(action: onTap) {
-      VStack(alignment: .leading, spacing: 12) {
-        // Top row with category and icon
+      VStack(alignment: .leading, spacing: 18) {
         HStack {
-          Text("Physically block distracting apps ")
+          Text("Focus setup")
             .font(.subheadline)
-            .fontWeight(.medium)
-            .foregroundColor(.primary)
+            .fontWeight(.semibold)
+            .foregroundStyle(.secondary)
 
           Spacer()
 
           Image(systemName: "hourglass")
-            .font(.body)
-            .foregroundColor(.white)
-            .padding(8)
+            .font(.subheadline.weight(.semibold))
+            .foregroundColor(themeManager.themeColor)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 8)
             .background(
-              Circle()
-                .fill(themeManager.themeColor.opacity(0.8))
+              Capsule(style: .continuous)
+                .fill(themeManager.themeColor.opacity(0.1))
             )
         }
 
-        Spacer()
-          .frame(height: 10)
-
-        // Title and subtitle
-        Text("Welcome to Foqos")
-          .font(.title)
-          .fontWeight(.bold)
+        Text("Make your phone quiet.")
+          .font(.system(size: 30, weight: .bold, design: .default))
           .foregroundColor(.primary)
+          .fixedSize(horizontal: false, vertical: true)
 
         Text(
-          "Tap here to get started on your first profile. You can use NFC Tags, QR codes or even Barcode codes."
+          "Create your first profile to block social media, sites, or other distractions with a physical tap."
         )
         .font(.subheadline)
         .foregroundColor(.secondary)
-        .lineLimit(3)
+        .fixedSize(horizontal: false, vertical: true)
       }
-      .padding(20)
-      .frame(maxWidth: .infinity, minHeight: 150)
-      .background(
-        RoundedRectangle(cornerRadius: 24)
-          .fill(Color(UIColor.systemBackground))
-          .overlay(
-            GeometryReader { geometry in
-              ZStack {
-                // Theme color circle blob
-                Circle()
-                  .fill(themeManager.themeColor.opacity(0.5))
-                  .frame(width: geometry.size.width * 0.5)
-                  .position(
-                    x: geometry.size.width * 0.9,
-                    y: geometry.size.height / 2
-                  )
-                  .blur(radius: 15)
-              }
-            }
-          )
-          .overlay(
-            RoundedRectangle(cornerRadius: 24)
-              .fill(.ultraThinMaterial.opacity(0.7))
-          )
-          .clipShape(RoundedRectangle(cornerRadius: 24))
+      .padding(24)
+      .frame(maxWidth: .infinity, minHeight: 176, alignment: .leading)
+      .glassSurface(
+        cornerRadius: 28,
+        tint: themeManager.themeColor,
+        strokeOpacity: 0.08,
+        shadowOpacity: 0.05
       )
     }
     .buttonStyle(ScaleButtonStyle())

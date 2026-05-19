@@ -26,90 +26,89 @@ struct FeaturesIntroScreen: View {
   ]
 
   var body: some View {
-    VStack(spacing: 0) {
-      // Header
-      VStack(spacing: 8) {
-        Text("Powerful Features")
-          .font(.system(size: 34, weight: .bold))
-          .foregroundColor(.primary)
-          .opacity(showContent ? 1 : 0)
-          .offset(y: showContent ? 0 : -20)
+    ZStack {
+      GlassPageBackground()
 
-        Text("Everything you need to stay focused")
-          .font(.system(size: 16))
-          .foregroundColor(.secondary)
-          .opacity(showContent ? 1 : 0)
-          .offset(y: showContent ? 0 : -20)
-      }
-
-      Spacer()
-
-      // Feature selector and display
       VStack(spacing: 0) {
-        // Icon selector
-        HStack(spacing: 20) {
-          ForEach(0..<features.count, id: \.self) { index in
-            Button(action: {
-              withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                selectedFeature = index
+        VStack(spacing: 8) {
+          Text("Powerful Features")
+            .font(.system(size: 34, weight: .bold))
+            .foregroundColor(.primary)
+            .opacity(showContent ? 1 : 0)
+            .offset(y: showContent ? 0 : -20)
+
+          Text("Everything you need to stay focused")
+            .font(.system(size: 16))
+            .foregroundColor(.secondary)
+            .opacity(showContent ? 1 : 0)
+            .offset(y: showContent ? 0 : -20)
+        }
+
+        Spacer()
+
+        VStack(spacing: 0) {
+          HStack(spacing: 20) {
+            ForEach(0..<features.count, id: \.self) { index in
+              Button(action: {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                  selectedFeature = index
+                }
+              }) {
+                Image(features[index].imageName)
+                  .resizable()
+                  .scaledToFit()
+                  .frame(width: 60, height: 60)
+                  .opacity(selectedFeature == index ? 1.0 : 0.4)
+                  .scaleEffect(selectedFeature == index ? 1.2 : 1.0)
               }
-            }) {
-              Image(features[index].imageName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 60, height: 60)
-                .opacity(selectedFeature == index ? 1.0 : 0.4)
-                .scaleEffect(selectedFeature == index ? 1.2 : 1.0)
             }
           }
-        }
-        .opacity(showContent ? 1 : 0)
-        .padding(.bottom, 50)
+          .opacity(showContent ? 1 : 0)
+          .padding(.bottom, 50)
 
-        // Feature content
-        VStack(spacing: 30) {
-          // Feature icon
-          Image(features[selectedFeature].imageName)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 100, height: 100)
-            .transition(.scale.combined(with: .opacity))
-            .id("icon-\(selectedFeature)")
+          VStack(spacing: 30) {
+            Image(features[selectedFeature].imageName)
+              .resizable()
+              .scaledToFit()
+              .frame(width: 100, height: 100)
+              .transition(.scale.combined(with: .opacity))
+              .id("icon-\(selectedFeature)")
 
-          // Feature text
-          VStack(spacing: 12) {
-            Text(features[selectedFeature].title)
-              .font(.system(size: 28, weight: .bold))
-              .foregroundColor(.primary)
-              .multilineTextAlignment(.center)
-              .transition(.opacity)
-              .id("title-\(selectedFeature)")
+            VStack(spacing: 12) {
+              Text(features[selectedFeature].title)
+                .font(.system(size: 28, weight: .bold))
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.center)
+                .transition(.opacity)
+                .id("title-\(selectedFeature)")
 
-            Text(features[selectedFeature].description)
-              .font(.system(size: 17))
-              .foregroundColor(.secondary)
-              .multilineTextAlignment(.center)
-              .lineSpacing(4)
-              .padding(.horizontal, 32)
-              .transition(.opacity)
-              .id("description-\(selectedFeature)")
+              Text(features[selectedFeature].description)
+                .font(.system(size: 17))
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .lineSpacing(4)
+                .padding(.horizontal, 32)
+                .transition(.opacity)
+                .id("description-\(selectedFeature)")
+            }
           }
+          .padding(.vertical, 22)
+          .glassSurface(cornerRadius: 30, strokeOpacity: 0.1, shadowOpacity: 0.05)
+          .opacity(showContent ? 1 : 0)
         }
-        .opacity(showContent ? 1 : 0)
-      }
 
-      Spacer()
+        Spacer()
 
-      // Tap indicator
-      HStack(spacing: 6) {
-        Image(systemName: "hand.tap.fill")
-          .font(.system(size: 14))
-          .foregroundColor(.secondary)
-        Text("Tap icons to explore features")
-          .font(.system(size: 14))
-          .foregroundColor(.secondary)
+        HStack(spacing: 6) {
+          Image(systemName: "hand.tap.fill")
+            .font(.system(size: 14))
+            .foregroundColor(.secondary)
+          Text("Tap icons to explore features")
+            .font(.system(size: 14))
+            .foregroundColor(.secondary)
+        }
+        .opacity(showContent ? 0.7 : 0)
       }
-      .opacity(showContent ? 0.7 : 0)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .onAppear {
@@ -129,5 +128,4 @@ struct Feature: Identifiable {
 
 #Preview {
   FeaturesIntroScreen()
-    .background(Color(.systemBackground))
 }

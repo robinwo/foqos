@@ -16,10 +16,10 @@ struct StrategyRow: View {
 
   private func backgroundColor(for tag: BlockingStrategyTag) -> Color {
     if tag == .beta {
-      return .orange.opacity(0.16)
+      return .orange.opacity(0.12)
     }
 
-    return .secondary.opacity(0.14)
+    return .secondary.opacity(0.1)
   }
 
   private func foregroundColor(for tag: BlockingStrategyTag) -> Color {
@@ -38,8 +38,10 @@ struct StrategyRow: View {
             .font(.subheadline)
             .foregroundStyle(.secondary)
             .frame(width: 24, height: 24)
-            .background(.secondary.opacity(0.12))
-            .clipShape(Circle())
+            .background(
+              Circle()
+                .fill(.white.opacity(0.12))
+            )
 
           Text(strategy.name)
             .font(.headline)
@@ -79,7 +81,13 @@ struct StrategyRow: View {
           }
         }
       }
-      .padding(.vertical, 4)
+      .padding(14)
+      .glassSurface(
+        cornerRadius: 20,
+        tint: isSelected ? themeManager.themeColor : nil,
+        strokeOpacity: isSelected ? 0.14 : 0.08,
+        shadowOpacity: 0.03
+      )
     }
     .buttonStyle(PlainButtonStyle())
   }

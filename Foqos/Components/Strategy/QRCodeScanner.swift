@@ -84,7 +84,7 @@ struct LabeledCodeScannerView: View {
             Text("Camera Access Required")
               .font(.headline)
 
-            Text("To scan QR codes, you need to grant camera access to Foqos.")
+            Text("To scan QR codes, you need to grant camera access to Pause.")
               .font(.subheadline)
               .multilineTextAlignment(.center)
               .foregroundColor(.secondary)

@@ -165,7 +165,10 @@ struct BlockedProfileView: View {
 
   var body: some View {
     NavigationStack {
-      Form {
+      ZStack {
+        GlassPageBackground()
+
+        Form {
         // Show lock status when profile is active
         if isBlocking {
           Section {
@@ -305,7 +308,7 @@ struct BlockedProfileView: View {
           CustomToggle(
             title: "Strict",
             description:
-              "Block deleting apps from your phone, stops you from deleting Foqos to access apps",
+              "Block deleting apps from your phone, stops you from deleting Pause to access apps",
             isOn: $enableStrictMode,
             isDisabled: isBlocking
           )
@@ -405,7 +408,8 @@ struct BlockedProfileView: View {
           }
         }
 
-      }
+        }
+        .scrollContentBackground(.hidden)
       .onChange(of: enableAllowMode) {
         _,
         newValue in
@@ -424,6 +428,7 @@ struct BlockedProfileView: View {
         }
       }
       .navigationTitle(isEditing ? "Profile Details" : "New Profile")
+      .toolbarBackground(.hidden, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button(action: { dismiss() }) {
@@ -595,6 +600,7 @@ struct BlockedProfileView: View {
             }
           )
         }
+      }
       }
     }
   }

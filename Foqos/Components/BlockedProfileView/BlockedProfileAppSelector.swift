@@ -33,42 +33,56 @@ struct BlockedProfileAppSelector: View {
   }
 
   var body: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Button(action: buttonAction) {
+        HStack {
+          VStack(alignment: .leading, spacing: 3) {
+            Text(buttonText)
+              .foregroundStyle(disabled ? .secondary : themeManager.themeColor)
+              .font(.subheadline.weight(.semibold))
+            Text(title + " apps")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+          }
 
-    Button(action: buttonAction) {
-      HStack {
-        Text(buttonText)
-          .foregroundStyle(themeManager.themeColor)
-        Spacer()
-        Image(systemName: "chevron.right")
-          .foregroundStyle(.gray)
-      }
-    }
-    .disabled(disabled)
-
-    if let disabledText = disabledText, disabled {
-      Text(disabledText)
-        .foregroundStyle(.red)
-        .padding(.top, 4)
-        .font(.caption)
-    } else if catAndAppCount == 0 {
-      Text("No apps selected")
-        .foregroundStyle(.gray)
-    } else {
-      VStack(alignment: .leading, spacing: 4) {
-        Text("\(countDisplayText) selected")
-          .font(.footnote)
-          .foregroundStyle(.gray)
-
-        if shouldShowWarning {
-          Text("⚠️ Allow mode: Categories expand to individual apps (50 limit applies)")
-            .font(.caption)
-            .foregroundColor(.orange)
-            .padding(.top, 4)
+          Spacer()
+          Image(systemName: "chevron.right")
+            .foregroundStyle(.gray)
         }
       }
-      .padding(.top, 4)
-    }
+      .disabled(disabled)
+      .padding(.horizontal, 14)
+      .padding(.vertical, 12)
+      .glassSurface(
+        cornerRadius: 18,
+        tint: themeManager.themeColor,
+        strokeOpacity: 0.08,
+        shadowOpacity: 0.03
+      )
 
+      if let disabledText = disabledText, disabled {
+        Text(disabledText)
+          .foregroundStyle(.red)
+          .font(.caption)
+      } else if catAndAppCount == 0 {
+        Text("No apps selected")
+          .font(.footnote)
+          .foregroundStyle(.secondary)
+      } else {
+        VStack(alignment: .leading, spacing: 4) {
+          Text("\(countDisplayText) selected")
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+
+          if shouldShowWarning {
+            Text("Allow mode: Categories expand to individual apps (50 limit applies)")
+              .font(.caption)
+              .foregroundColor(.orange)
+          }
+        }
+      }
+    }
+    .padding(.vertical, 4)
   }
 }
 

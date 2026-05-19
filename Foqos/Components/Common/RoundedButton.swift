@@ -2,6 +2,8 @@ import SwiftUI
 import UIKit
 
 struct RoundedButton: View {
+  @EnvironmentObject var themeManager: ThemeManager
+
   let text: String
   let action: () -> Void
   let backgroundColor: Color
@@ -49,13 +51,16 @@ struct RoundedButton: View {
         }
       }
       .foregroundColor(textColor)
-      .padding(.horizontal, 12)
-      .padding(.vertical, 8)
+      .padding(.horizontal, 14)
+      .padding(.vertical, 10)
       .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-      .glassButtonBackground(cornerRadius: 16)
+      .glassButtonBackground(
+        cornerRadius: 18,
+        tint: backgroundColor
+      )
       .overlay(
-        RoundedRectangle(cornerRadius: 16, style: .continuous)
-          .strokeBorder(.white.opacity(0.15))
+        RoundedRectangle(cornerRadius: 18, style: .continuous)
+          .strokeBorder(.white.opacity(0.18))
       )
     }
     .buttonStyle(PlainButtonStyle())
@@ -64,14 +69,16 @@ struct RoundedButton: View {
 
 extension View {
   @ViewBuilder
-  fileprivate func glassButtonBackground(cornerRadius: CGFloat) -> some View {
+  fileprivate func glassButtonBackground(cornerRadius: CGFloat, tint: Color) -> some View {
     if #available(iOS 26.0, *) {
       self.modifier(GlassBackgroundModifier(cornerRadius: cornerRadius))
     } else {
       self
-        .background(
-          .ultraThinMaterial,
-          in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+        .glassSurface(
+          cornerRadius: cornerRadius,
+          tint: tint,
+          strokeOpacity: 0.1,
+          shadowOpacity: 0.035
         )
     }
   }
@@ -121,4 +128,5 @@ private struct GlassBackgroundModifier: ViewModifier {
       iconName: "gear")
   }
   .padding(20)
+  .environmentObject(ThemeManager.shared)
 }

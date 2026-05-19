@@ -81,48 +81,54 @@ struct StrategyPicker: View {
 
   var body: some View {
     NavigationStack {
-      Form {
-        Section {
-          VStack(alignment: .leading, spacing: 12) {
-            HStack {
-              Spacer()
-              Image(systemName: "shield.fill")
-                .font(.largeTitle)
-                .foregroundStyle(.secondary)
-              Spacer()
-            }
-            .padding(.vertical, 12)
+      ZStack {
+        GlassPageBackground()
 
-            Text(
-              "Blocking strategies control how this profile activates and deactivates. Choose a method that works best for your workflow."
-            )
-            .font(.subheadline)
-            .foregroundStyle(.primary)
-            .multilineTextAlignment(.center)
-          }
-          .padding(.horizontal, 8)
-        }
+        Form {
+          Section {
+            VStack(alignment: .leading, spacing: 12) {
+              HStack {
+                Spacer()
+                Image(systemName: "shield.fill")
+                  .font(.largeTitle)
+                  .foregroundStyle(.secondary)
+                Spacer()
+              }
+              .padding(.vertical, 12)
 
-        Section {
-          if filteredStrategies.isEmpty {
-            Text("No strategies found. Try a different filter or search term.")
-              .font(.subheadline)
-              .foregroundStyle(.secondary)
-          } else {
-            ForEach(filteredStrategies, id: \.name) { strategy in
-              StrategyRow(
-                strategy: strategy,
-                isSelected: selectedStrategy?.name == strategy.name,
-                onTap: { selectedStrategy = strategy }
+              Text(
+                "Blocking strategies control how this profile activates and deactivates. Choose a method that works best for your workflow."
               )
+              .font(.subheadline)
+              .foregroundStyle(.primary)
+              .multilineTextAlignment(.center)
             }
+            .padding(.horizontal, 8)
           }
-        } header: {
-          Text("Available Strategies")
+
+          Section {
+            if filteredStrategies.isEmpty {
+              Text("No strategies found. Try a different filter or search term.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            } else {
+              ForEach(filteredStrategies, id: \.name) { strategy in
+                StrategyRow(
+                  strategy: strategy,
+                  isSelected: selectedStrategy?.name == strategy.name,
+                  onTap: { selectedStrategy = strategy }
+                )
+              }
+            }
+          } header: {
+            Text("Available Strategies")
+          }
         }
+        .scrollContentBackground(.hidden)
       }
       .navigationTitle("Blocking Strategy")
       .navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(.hidden, for: .navigationBar)
       .searchable(text: $searchText, prompt: "Search strategies")
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
@@ -168,4 +174,5 @@ struct StrategyPicker: View {
     selectedStrategy: $selectedStrategy,
     isPresented: $isPresented
   )
+  .environmentObject(ThemeManager.shared)
 }

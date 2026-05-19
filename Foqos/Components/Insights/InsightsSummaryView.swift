@@ -10,7 +10,7 @@ struct InsightsSummaryRow: View {
       Image(systemName: icon)
         .font(.body)
         .foregroundStyle(.secondary)
-        .frame(width: 20)
+        .frame(width: 24)
 
       Text(label)
         .font(.body)
@@ -23,7 +23,7 @@ struct InsightsSummaryRow: View {
         .fontWeight(.medium)
         .foregroundStyle(.primary)
     }
-    .padding(.vertical, 4)
+    .padding(.vertical, 6)
   }
 }
 
@@ -37,7 +37,7 @@ struct InsightsSummaryCard: View {
   }
 
   var body: some View {
-    VStack(spacing: 12) {
+    VStack(spacing: 14) {
       SummaryCardRow(
         icon: "clock.fill",
         label: "Total Focus Time",
@@ -60,9 +60,8 @@ struct InsightsSummaryCard: View {
         value: truncatedProfileId
       )
     }
-    .padding()
-    .background(Color(.secondarySystemGroupedBackground))
-    .clipShape(RoundedRectangle(cornerRadius: 12))
+    .padding(18)
+    .glassSurface(cornerRadius: 22, strokeOpacity: 0.08, shadowOpacity: 0.05)
   }
 }
 
@@ -81,6 +80,7 @@ private struct SummaryCardRow: View {
       Text(label)
         .font(.subheadline)
         .foregroundStyle(.secondary)
+        .lineLimit(1)
 
       Spacer()
 
@@ -121,5 +121,4 @@ private struct SummaryCardRow: View {
     profileId: UUID()
   )
   .padding()
-  .background(Color(.systemGroupedBackground))
 }

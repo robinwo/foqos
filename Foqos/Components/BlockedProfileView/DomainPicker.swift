@@ -22,67 +22,73 @@ struct DomainPicker: View {
 
   var body: some View {
     NavigationStack {
-      Form {
-        Section {
-          HStack {
-            TextField("Enter domain (e.g., example.com)", text: $newDomain)
-              .autocapitalization(.none)
-              .keyboardType(.URL)
-              .textContentType(.URL)
-              .onSubmit {
-                addDomain()
+      ZStack {
+        GlassPageBackground()
+
+        Form {
+          Section {
+            HStack {
+              TextField("Enter domain (e.g., example.com)", text: $newDomain)
+                .autocapitalization(.none)
+                .keyboardType(.URL)
+                .textContentType(.URL)
+                .onSubmit {
+                  addDomain()
+                }
+
+              Button(action: addDomain) {
+                Image(systemName: "plus.circle.fill")
+                  .foregroundStyle(themeManager.themeColor)
+                  .font(.title2)
               }
-
-            Button(action: addDomain) {
-              Image(systemName: "plus.circle.fill")
-                .foregroundStyle(themeManager.themeColor)
-                .font(.title2)
+              .disabled(newDomain.isEmpty || domains.count >= maxDomains)
             }
-            .disabled(newDomain.isEmpty || domains.count >= maxDomains)
+          } header: {
+            Text("Add Domain")
+          } footer: {
+            Text(
+              "Enter a domain (e.g., reddit.com, facebook.com, instagram.com). This will also \(allowMode ? "allow" : "block") all subpaths (e.g., reddit.com/r/popular) automatically."
+            )
+            .font(.caption)
           }
-        } header: {
-          Text("Add Domain")
-        } footer: {
-          Text(
-            "Enter a domain (e.g., reddit.com, facebook.com, instagram.com). This will also \(allowMode ? "allow" : "block") all subpaths (e.g., reddit.com/r/popular) automatically."
-          )
-          .font(.caption)
-        }
 
-        Section {
-          ForEach(domains, id: \.self) { domain in
-            Text(domain)
-              .font(.subheadline)
-          }
-          .onDelete(perform: deleteDomains)
+          Section {
+            ForEach(domains, id: \.self) { domain in
+              Text(domain)
+                .font(.subheadline)
+            }
+            .onDelete(perform: deleteDomains)
 
-          if domains.isEmpty {
-            Text("No domains added")
-              .foregroundStyle(.secondary)
-              .font(.subheadline)
-          }
-        } header: {
-          HStack {
-            Text(allowMode ? "Allowed Domains" : "Blocked Domains")
-            Spacer()
-            Text("\(domains.count)/\(maxDomains)")
-              .foregroundStyle(.secondary)
-          }
-        } footer: {
-          VStack(alignment: .leading, spacing: 4) {
-            Text(message)
-              .font(.caption)
-
-            if domains.count >= maxDomains {
-              Text("⚠️ Maximum of 50 domains reached (Apple's limit)")
+            if domains.isEmpty {
+              Text("No domains added")
+                .foregroundStyle(.secondary)
+                .font(.subheadline)
+            }
+          } header: {
+            HStack {
+              Text(allowMode ? "Allowed Domains" : "Blocked Domains")
+              Spacer()
+              Text("\(domains.count)/\(maxDomains)")
+                .foregroundStyle(.secondary)
+            }
+          } footer: {
+            VStack(alignment: .leading, spacing: 4) {
+              Text(message)
                 .font(.caption)
-                .foregroundStyle(.orange)
+
+              if domains.count >= maxDomains {
+                Text("⚠️ Maximum of 50 domains reached (Apple's limit)")
+                  .font(.caption)
+                  .foregroundStyle(.orange)
+              }
             }
           }
         }
+        .scrollContentBackground(.hidden)
       }
       .navigationTitle(allowMode ? "Allow Domains" : "Block Domains")
       .navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(.hidden, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
           Button(action: { isPresented = false }) {
@@ -161,11 +167,13 @@ struct DomainPicker: View {
       domains: $domains,
       isPresented: .constant(true)
     )
+    .environmentObject(ThemeManager.shared)
 
     DomainPicker(
       domains: $domains,
       isPresented: .constant(true),
       allowMode: true
     )
+    .environmentObject(ThemeManager.shared)
   }
 }

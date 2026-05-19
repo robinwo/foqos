@@ -56,17 +56,14 @@ struct FoqosWidgetAttributes: ActivityAttributes {
 struct FoqosWidgetLiveActivity: Widget {
   var body: some WidgetConfiguration {
     ActivityConfiguration(for: FoqosWidgetAttributes.self) { context in
-      // Lock screen/banner UI goes here
       HStack(alignment: .center, spacing: 16) {
-        // Left side - App info
         VStack(alignment: .leading, spacing: 8) {
-          HStack(spacing: 4) {
-            Text("Foqos")
-              .font(.headline)
-              .fontWeight(.bold)
+          HStack(spacing: 8) {
+            Text("Pause")
+              .font(.headline.weight(.bold))
               .foregroundColor(.primary)
-            Image(systemName: "hourglass")
-              .foregroundColor(.purple)
+
+            statusChip(for: context.state)
           }
 
           Text(context.attributes.name)
@@ -80,13 +77,12 @@ struct FoqosWidgetLiveActivity: Widget {
 
         Spacer()
 
-        // Right side - Timer or break/pause indicator
         VStack(alignment: .trailing, spacing: 4) {
           if context.state.isPauseActive {
             statusView(
               label: "Paused",
               systemImage: "pause.circle.fill",
-              color: .yellow,
+              color: Color(red: 0.75, green: 0.57, blue: 0.15),
               countdownRange: context.state.countdownRange,
               timerFont: .title,
               alignment: .trailing
@@ -95,7 +91,7 @@ struct FoqosWidgetLiveActivity: Widget {
             statusView(
               label: "On a Break",
               systemImage: "cup.and.heat.waves.fill",
-              color: .orange,
+              color: Color(red: 0.79, green: 0.41, blue: 0.18),
               countdownRange: context.state.countdownRange,
               timerFont: .title,
               alignment: .trailing
@@ -107,17 +103,19 @@ struct FoqosWidgetLiveActivity: Widget {
       }
       .padding(.horizontal, 16)
       .padding(.vertical, 12)
+      .activityBackgroundTint(Color(red: 0.94, green: 0.91, blue: 0.86))
+      .activitySystemActionForegroundColor(Color(red: 0.22, green: 0.2, blue: 0.18))
 
     } dynamicIsland: { context in
       DynamicIsland {
         DynamicIslandExpandedRegion(.center) {
           VStack(spacing: 8) {
-            HStack(spacing: 6) {
-              Image(systemName: "hourglass")
-                .foregroundColor(.purple)
+            HStack(spacing: 8) {
               Text(context.attributes.name)
                 .font(.headline)
                 .fontWeight(.medium)
+
+              statusChip(for: context.state)
             }
 
             Text(context.attributes.message)
@@ -129,7 +127,7 @@ struct FoqosWidgetLiveActivity: Widget {
               statusView(
                 label: "Paused",
                 systemImage: "pause.circle.fill",
-                color: .yellow,
+                color: Color(red: 0.75, green: 0.57, blue: 0.15),
                 countdownRange: context.state.countdownRange,
                 timerFont: .title2,
                 alignment: .center
@@ -138,7 +136,7 @@ struct FoqosWidgetLiveActivity: Widget {
               statusView(
                 label: "On a Break",
                 systemImage: "cup.and.heat.waves.fill",
-                color: .orange,
+                color: Color(red: 0.79, green: 0.41, blue: 0.18),
                 countdownRange: context.state.countdownRange,
                 timerFont: .title2,
                 alignment: .center
@@ -151,24 +149,51 @@ struct FoqosWidgetLiveActivity: Widget {
           .padding(.vertical, 4)
         }
       } compactLeading: {
-        // Compact leading state
         Image(systemName: "hourglass")
-          .foregroundColor(.purple)
+          .foregroundColor(Color(red: 0.46, green: 0.41, blue: 0.36))
       } compactTrailing: {
-        // Compact trailing state
         Text(
           context.attributes.name
         )
         .font(.caption)
         .fontWeight(.semibold)
       } minimal: {
-        // Minimal state
         Image(systemName: "hourglass")
-          .foregroundColor(.purple)
+          .foregroundColor(Color(red: 0.46, green: 0.41, blue: 0.36))
       }
       .widgetURL(URL(string: "http://www.foqos.app"))
-      .keylineTint(Color.purple)
+      .keylineTint(Color(red: 0.46, green: 0.41, blue: 0.36))
     }
+  }
+
+  @ViewBuilder
+  private func statusChip(for state: FoqosWidgetAttributes.ContentState) -> some View {
+    let color: Color =
+      state.isPauseActive
+      ? Color(red: 0.75, green: 0.57, blue: 0.15)
+      : state.isBreakActive
+        ? Color(red: 0.79, green: 0.41, blue: 0.18)
+        : Color(red: 0.46, green: 0.41, blue: 0.36)
+
+    let label =
+      state.isPauseActive ? "Paused" : state.isBreakActive ? "Break" : "Focus"
+
+    HStack(spacing: 5) {
+      Image(
+        systemName: state.isPauseActive
+          ? "pause.fill" : state.isBreakActive ? "cup.and.saucer.fill" : "hourglass"
+      )
+      .font(.caption2.weight(.semibold))
+      Text(label)
+        .font(.caption2.weight(.semibold))
+    }
+    .foregroundColor(color)
+    .padding(.horizontal, 8)
+    .padding(.vertical, 4)
+    .background(
+      Capsule(style: .continuous)
+        .fill(Color.white.opacity(0.72))
+    )
   }
 
   @ViewBuilder
@@ -207,7 +232,7 @@ struct FoqosWidgetLiveActivity: Widget {
     VStack(alignment: alignment == .trailing ? .trailing : .center, spacing: 4) {
       HStack(spacing: 6) {
         Image(systemName: systemImage)
-          .font(.title2)
+          .font(.title3)
           .foregroundColor(color)
         Text(label)
           .font(.subheadline)

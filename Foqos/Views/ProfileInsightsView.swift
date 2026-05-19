@@ -210,7 +210,10 @@ struct ProfileInsightsView: View {
 
   var body: some View {
     NavigationStack {
-      List {
+      ZStack {
+        GlassPageBackground()
+
+        List {
         if viewMode != .allSessions {
           Section {
             if viewMode == .week {
@@ -276,8 +279,10 @@ struct ProfileInsightsView: View {
             )
           }
         }
-      }
+        }
+      .scrollContentBackground(.hidden)
       .navigationTitle("\(profileName) Insights")
+      .toolbarBackground(.hidden, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button {
@@ -435,6 +440,7 @@ struct ProfileInsightsView: View {
       } message: {
         Text(
           "Are you sure you want to delete all completed sessions? This action cannot be undone.")
+      }
       }
     }
     .task {

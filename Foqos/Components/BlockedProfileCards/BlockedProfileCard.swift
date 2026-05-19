@@ -34,8 +34,8 @@ struct BlockedProfileCard: View {
         HStack {
           VStack(alignment: .leading, spacing: 10) {
             Text(profile.name)
-              .font(.title3)
-              .fontWeight(.bold)
+              .font(.title2)
+              .fontWeight(.semibold)
               .foregroundColor(.primary)
 
             // Using the new ProfileIndicators component
@@ -85,12 +85,13 @@ struct BlockedProfileCard: View {
             Image(systemName: "ellipsis")
               .font(.system(size: 14, weight: .medium))
               .foregroundColor(.primary)
-              .padding(10)
+              .padding(.horizontal, 10)
+              .padding(.vertical, 8)
               .background(
-                Circle()
+                Capsule(style: .continuous)
                   .fill(.thinMaterial)
                   .overlay(
-                    Circle()
+                    Capsule(style: .continuous)
                       .stroke(
                         Color.primary.opacity(0.2),
                         lineWidth: 1
@@ -120,7 +121,7 @@ struct BlockedProfileCard: View {
           )
         }
 
-        Spacer(minLength: 4)
+        Spacer(minLength: 8)
 
         ProfileTimerButton(
           isActive: isActive,

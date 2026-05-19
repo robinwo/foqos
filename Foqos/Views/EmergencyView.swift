@@ -4,6 +4,7 @@ struct EmergencyView: View {
   @Environment(\.modelContext) private var context
   @Environment(\.dismiss) private var dismiss
 
+  @EnvironmentObject var themeManager: ThemeManager
   @EnvironmentObject var strategyManager: StrategyManager
 
   private var emergencyUnblocksRemaining: Int { strategyManager.getRemainingEmergencyUnblocks() }
@@ -12,13 +13,17 @@ struct EmergencyView: View {
   @State private var isPerformingEmergencyUnblock: Bool = false
 
   var body: some View {
-    ScrollView {
-      VStack(spacing: 20) {
-        header
+    ZStack {
+      GlassPageBackground()
 
-        statusCard
+      ScrollView {
+        VStack(spacing: 20) {
+          header
+
+          statusCard
+        }
+        .padding()
       }
-      .padding()
     }
     .onAppear {
       strategyManager.checkAndResetEmergencyUnblocks()
@@ -101,8 +106,12 @@ struct EmergencyView: View {
             Image(systemName: "gearshape.fill")
               .font(.caption)
               .foregroundColor(.secondary)
-              .padding(8)
-              .background(Circle().fill(Color.secondary.opacity(0.1)))
+              .padding(.horizontal, 10)
+              .padding(.vertical, 8)
+              .background(
+                Capsule(style: .continuous)
+                  .fill(Color.white.opacity(0.14))
+              )
           }
         }
       }
@@ -163,10 +172,7 @@ struct EmergencyView: View {
       }
     }
     .padding(16)
-    .background(
-      RoundedRectangle(cornerRadius: 16, style: .continuous)
-        .fill(.thinMaterial)
-    )
+    .glassSurface(cornerRadius: 20, tint: themeManager.themeColor, strokeOpacity: 0.08)
   }
 
   private func performEmergencyUnblock() {
@@ -196,5 +202,6 @@ struct EmergencyPreviewSheetHost: View {
 #Preview {
   EmergencyPreviewSheetHost()
     .environmentObject(StrategyManager())
+    .environmentObject(ThemeManager.shared)
     .defaultAppStorage(UserDefaults(suiteName: "preview")!)
 }

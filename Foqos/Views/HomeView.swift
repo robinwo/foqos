@@ -86,84 +86,90 @@ struct HomeView: View {
   }
 
   var body: some View {
-    ScrollView(showsIndicators: false) {
-      VStack(alignment: .leading, spacing: 30) {
-        HStack(alignment: .center) {
-          AppTitle()
-          Spacer()
-          HStack(spacing: 8) {
-            RoundedButton(
-              "Support",
-              action: {
-                showDonationView = true
-              }, iconName: "heart.fill")
-            RoundedButton(
-              "",
-              action: {
-                showSettingsView = true
-              }, iconName: "gear")
+    ZStack {
+      GlassPageBackground()
+
+      ScrollView(showsIndicators: false) {
+        VStack(alignment: .leading, spacing: 36) {
+          HStack(alignment: .center) {
+            AppTitle()
+            Spacer()
+            HStack(spacing: 8) {
+              RoundedButton(
+                "Support",
+                action: {
+                  showDonationView = true
+                }, iconName: "heart.fill")
+              RoundedButton(
+                "",
+                action: {
+                  showSettingsView = true
+                }, iconName: "gear")
+            }
           }
-        }
-        .padding(.trailing, 16)
-        .padding(.top, 16)
+          .padding(.trailing, 16)
+          .padding(.top, 20)
 
-        AuthorizationCallout(
-          authorizationStatus: requestAuthorizer.getAuthorizationStatus(),
-          onAuthorizationHandler: {
-            requestAuthorizer.requestAuthorization()
-          }
-        )
-        .padding(.horizontal, 16)
-
-        if profiles.isEmpty {
-          Welcome(onTap: {
-            showNewProfileView = true
-          })
-          .padding(.horizontal, 16)
-        }
-
-        if !profiles.isEmpty {
-          BlockedSessionsHabitTracker(
-            sessions: recentCompletedSessions,
-            profiles: profiles,
-            onInsightsTapped: { context in
-              dashboardInsightsContext = context
+          AuthorizationCallout(
+            authorizationStatus: requestAuthorizer.getAuthorizationStatus(),
+            onAuthorizationHandler: {
+              requestAuthorizer.requestAuthorization()
             }
           )
           .padding(.horizontal, 16)
 
-          BlockedProfileCarousel(
-            profiles: profiles,
-            isBlocking: isBlocking,
-            isBreakAvailable: isBreakAvailable,
-            isBreakActive: isBreakActive,
-            isPauseActive: isPauseActive,
-            activeSessionProfileId: activeSessionProfileId,
-            elapsedTime: strategyManager.elapsedTime,
-            startingProfileId: navigateToProfileId,
-            onStartTapped: { profile in
-              strategyButtonPress(profile)
-            },
-            onStopTapped: { profile in
-              strategyButtonPress(profile)
-            },
-            onEditTapped: { profile in
-              profileToEdit = profile
-            },
-            onStatsTapped: { profile in
-              profileToShowStats = profile
-            },
-            onBreakTapped: { _ in
-              strategyManager.toggleBreak(context: context)
-            },
-            onManageTapped: {
-              isProfileListPresent = true
-            },
-            onEmergencyTapped: {
-              showEmergencyView = true
-            },
-          )
+          if profiles.isEmpty {
+            Welcome(onTap: {
+              showNewProfileView = true
+            })
+            .padding(.horizontal, 16)
+          }
+
+          if !profiles.isEmpty {
+            BlockedSessionsHabitTracker(
+              sessions: recentCompletedSessions,
+              profiles: profiles,
+              onInsightsTapped: { context in
+                dashboardInsightsContext = context
+              }
+            )
+            .padding(.horizontal, 16)
+
+            BlockedProfileCarousel(
+              profiles: profiles,
+              isBlocking: isBlocking,
+              isBreakAvailable: isBreakAvailable,
+              isBreakActive: isBreakActive,
+              isPauseActive: isPauseActive,
+              activeSessionProfileId: activeSessionProfileId,
+              elapsedTime: strategyManager.elapsedTime,
+              startingProfileId: navigateToProfileId,
+              onStartTapped: { profile in
+                strategyButtonPress(profile)
+              },
+              onStopTapped: { profile in
+                strategyButtonPress(profile)
+              },
+              onEditTapped: { profile in
+                profileToEdit = profile
+              },
+              onStatsTapped: { profile in
+                profileToShowStats = profile
+              },
+              onBreakTapped: { _ in
+                strategyManager.toggleBreak(context: context)
+              },
+              onManageTapped: {
+                isProfileListPresent = true
+              },
+              onEmergencyTapped: {
+                showEmergencyView = true
+              },
+            )
+            .padding(.top, 4)
+          }
         }
+        .padding(.bottom, 32)
       }
     }
     .refreshable {

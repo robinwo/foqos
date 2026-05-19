@@ -6,14 +6,14 @@
 <a href="https://www.buymeacoffee.com/ambitionsoftware" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 </p>
 
-<h1 align="center"><a href="https://apps.apple.com/ca/app/foqos/id6736793117">Foqos</a></h1>
+<h1 align="center"><a href="https://apps.apple.com/ca/app/foqos/id6736793117">Pause</a></h1>
 
 <p align="center">
   <strong>Focus, the physical way</strong>
 </p>
 
 <p align="center">
-  Foqos helps you put your most distracting apps behind a quick tap — using NFC tags or QR codes — so you can stay in the zone and build better digital habits. It’s free, open source, and an alternative to Brick, Unpluq, Opal, Blok, and more.
+  Pause helps you put your most distracting apps behind a quick tap — using NFC tags or QR codes — so you can stay in the zone and build better digital habits. It’s free, open source, and an alternative to Brick, Unpluq, Opal, Blok, and more.
 </p>
 
 ---
@@ -44,7 +44,7 @@ Looking for similar functionality on Android? Check out **[Switchly](https://swi
 
 ### From the App Store
 
-1. Download Foqos from the [App Store](https://apps.apple.com/ca/app/foqos/id6736793117)
+1. Download Pause from the [App Store](https://apps.apple.com/ca/app/foqos/id6736793117)
 2. Grant Screen Time permissions when prompted
 3. Create your first blocking profile
 4. Optionally set up NFC tags or a QR code and start focusing
@@ -52,27 +52,27 @@ Looking for similar functionality on Android? Check out **[Switchly](https://swi
 ### Setting Up NFC Tags
 
 1. Grab a few NFC tags (NTAG213 or similar works great)
-2. Create a profile in Foqos
+2. Create a profile in Pause
 3. Write the tag from within the app
 4. Stick tags where they make sense (desk, study spot, bedside)
 5. Tap to start or stop a session
 
 ### Setting Up Shortcuts
 
-Automate triggering Foqos profiles with iOS Shortcuts. Note that you'll need to create separate automations for each NFC tag.
+Automate triggering Pause profiles with iOS Shortcuts. Note that you'll need to create separate automations for each NFC tag.
 
 1. Open the **Shortcuts** app and go to the **Automation** tab.
 2. Tap **Create Personal Automation** and search for **NFC**.
-3. Scan an NFC tag and give it a name for the Foqos profile you want to run.
+3. Scan an NFC tag and give it a name for the Pause profile you want to run.
 4. Enable **Run Immediately** and turn on **Notify When Run**. Tap **Next**.
 
 <img width="250" alt="iOS Shortcuts NFC setup screen" src="/images/shortcut-instructions-1.png" />
 
-5. Create a New Blank Automation. Search for 'Foqos' and add **Check if Foqos Session is Active**. Turn off **Show When Run**.
+5. Create a New Blank Automation. Search for 'Pause' and add **Check if Pause Session is Active**. Turn off **Show When Run**.
 
 <img width="250" alt="iOS Shortcuts action setup" src="/images/shortcut-instructions-2.png" />
 
-6. Add an **If** block with **Start Foqos Profile** and **Stop Foqos Profile**. For the Start and Stop actions, tap on the variable name, clear it, then select the Foqos profile you wish to trigger.
+6. Add an **If** block with **Start Pause Profile** and **Stop Pause Profile**. For the Start and Stop actions, tap on the variable name, clear it, then select the Pause profile you wish to trigger.
 7. Arrange the actions so the profile is stopped if active; otherwise, it starts.
 
 <img width="250" alt="iOS Shortcuts If block setup" src="/images/shortcut-instructions-3.png" />  
@@ -80,7 +80,7 @@ Automate triggering Foqos profiles with iOS Shortcuts. Note that you'll need to 
 
 ### 3D Printable NFC Accessories
 
-Enhance your Foqos setup with a 3D printable brick or keychain, compatible with 25mm NFC tags:
+Enhance your Pause setup with a 3D printable brick or keychain, compatible with 25mm NFC tags:
 
 - [Foqos NFC Brick & Keychain on Printables](https://www.printables.com/model/1537982-foqos-nfc-brick-keychain)
 

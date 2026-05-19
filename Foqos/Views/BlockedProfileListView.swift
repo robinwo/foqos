@@ -20,7 +20,9 @@ struct BlockedProfileListView: View {
 
   var body: some View {
     NavigationStack {
-      Group {
+      ZStack {
+        GlassPageBackground()
+
         if profiles.isEmpty {
           EmptyView(
             iconName: "person.crop.circle.badge.plus",
@@ -42,9 +44,11 @@ struct BlockedProfileListView: View {
             .onMove(perform: editMode == .active ? moveProfiles : nil)
           }
           .environment(\.editMode, $editMode)
+          .scrollContentBackground(.hidden)
         }
       }
       .navigationTitle("Profiles")
+      .toolbarBackground(.hidden, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button(action: { dismiss() }) {

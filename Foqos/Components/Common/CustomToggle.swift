@@ -10,18 +10,23 @@ struct CustomToggle: View {
   var errorMessage: String? = nil
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 0) {
-      Toggle(title, isOn: $isOn)
-        .disabled(isDisabled)
-        .tint(themeManager.themeColor)
+    VStack(alignment: .leading, spacing: 10) {
+      Toggle(isOn: $isOn) {
+        VStack(alignment: .leading, spacing: 6) {
+          Text(title)
+            .font(.subheadline.weight(.semibold))
+            .foregroundStyle(.primary)
 
-      Text(description)
-        .font(.caption)
-        .foregroundColor(.secondary)
-        .padding(.vertical, 4)
-        .fixedSize(horizontal: false, vertical: true)
-        .lineLimit(nil)
-        .padding(.trailing, 80)
+          Text(description)
+            .font(.caption)
+            .foregroundColor(.secondary)
+            .fixedSize(horizontal: false, vertical: true)
+            .lineLimit(nil)
+            .padding(.trailing, 64)
+        }
+      }
+      .disabled(isDisabled)
+      .tint(themeManager.themeColor)
 
       if isDisabled && errorMessage != nil {
         Text(errorMessage!)
@@ -29,6 +34,15 @@ struct CustomToggle: View {
           .foregroundColor(.red)
       }
     }
+    .padding(.horizontal, 14)
+    .padding(.vertical, 14)
+    .glassSurface(
+      cornerRadius: 18,
+      tint: themeManager.themeColor,
+      strokeOpacity: 0.08,
+      shadowOpacity: 0.03
+    )
+    .opacity(isDisabled ? 0.82 : 1)
   }
 }
 

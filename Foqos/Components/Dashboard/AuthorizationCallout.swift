@@ -3,6 +3,7 @@ import SwiftUI
 
 struct AuthorizationCallout: View {
   @EnvironmentObject var themeManager: ThemeManager
+  @Environment(\.colorScheme) private var colorScheme
 
   let authorizationStatus: AuthorizationStatus
   let onAuthorizationHandler: () -> Void
@@ -17,12 +18,16 @@ struct AuthorizationCallout: View {
         Button(action: onAuthorizationHandler) {
           HStack(alignment: .top, spacing: 12) {
             Image(systemName: "exclamationmark.shield.fill")
-              .font(.title3)
-              .foregroundStyle(.red)
-              .padding(10)
+              .font(.subheadline.weight(.semibold))
+              .foregroundStyle(Color(red: 0.69, green: 0.33, blue: 0.19))
+              .padding(.horizontal, 10)
+              .padding(.vertical, 8)
               .background(
-                Circle()
-                  .fill(Color.red.opacity(0.18))
+                Capsule(style: .continuous)
+                  .fill(
+                    Color(red: 0.96, green: 0.88, blue: 0.76)
+                      .opacity(colorScheme == .dark ? 0.28 : 0.8)
+                  )
               )
 
             VStack(alignment: .leading, spacing: 4) {
@@ -62,14 +67,12 @@ struct AuthorizationCallout: View {
 
   private var calloutBackground: some View {
     RoundedRectangle(cornerRadius: 24, style: .continuous)
-      .fill(Color(UIColor.systemBackground))
-      .overlay(
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-          .fill(.ultraThinMaterial.opacity(0.7))
-      )
-      .overlay(
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-          .stroke(Color.gray.opacity(0.25), lineWidth: 1)
+      .fill(.clear)
+      .glassSurface(
+        cornerRadius: 24,
+        tint: themeManager.themeColor,
+        strokeOpacity: 0.08,
+        shadowOpacity: 0.05
       )
   }
 }

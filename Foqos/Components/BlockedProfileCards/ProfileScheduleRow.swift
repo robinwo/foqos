@@ -42,8 +42,7 @@ struct ProfileScheduleRow: View {
   }
 
   var body: some View {
-    HStack(spacing: 4) {
-      // Icon
+    HStack(spacing: 8) {
       Group {
         if profile.scheduleIsOutOfSync || (hasSchedule && isTimerStrategy) {
           Image(systemName: "exclamationmark.triangle.fill")
@@ -112,5 +111,5 @@ struct ProfileScheduleRow: View {
     )
   }
   .padding()
-  .background(Color(.systemGroupedBackground))
+  .background(Color(hex: "#f3efe8"))
 }

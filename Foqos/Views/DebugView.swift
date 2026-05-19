@@ -20,66 +20,71 @@ struct DebugView: View {
 
   var body: some View {
     NavigationView {
-      ScrollView {
-        VStack(alignment: .leading, spacing: 20) {
-          // Strategy Manager Section (always shown)
-          DebugSection(title: "Strategy Manager") {
-            StrategyManagerDebugCard(strategyManager: strategyManager)
-          }
+      ZStack {
+        GlassPageBackground()
 
-          // Active Session Section (if available)
-          if let session = strategyManager.activeSession {
-            DebugSection(title: "Active Session") {
-              SessionDebugCard(session: session)
+        ScrollView {
+          VStack(alignment: .leading, spacing: 20) {
+            // Strategy Manager Section (always shown)
+            DebugSection(title: "Strategy Manager") {
+              StrategyManagerDebugCard(strategyManager: strategyManager)
             }
-          }
 
-          // Device Activities Section (always shown)
-          DebugSection(title: "Device Activities (\(deviceActivities.count))") {
-            DeviceActivitiesDebugCard(
-              activities: deviceActivities,
-              profileId: activeProfile?.id
-            )
-          }
+            // Active Session Section (if available)
+            if let session = strategyManager.activeSession {
+              DebugSection(title: "Active Session") {
+                SessionDebugCard(session: session)
+              }
+            }
 
-          // All Profiles Section
-          if !allProfiles.isEmpty {
-            DebugSection(title: "All Profiles (\(allProfiles.count))") {
-              VStack(alignment: .leading, spacing: 16) {
-                ForEach(allProfiles) { profile in
-                  VStack(alignment: .leading, spacing: 8) {
-                    Text(profile.name)
-                      .font(.headline)
+            // Device Activities Section (always shown)
+            DebugSection(title: "Device Activities (\(deviceActivities.count))") {
+              DeviceActivitiesDebugCard(
+                activities: deviceActivities,
+                profileId: activeProfile?.id
+              )
+            }
 
-                    ProfileDebugCard(profile: profile)
+            // All Profiles Section
+            if !allProfiles.isEmpty {
+              DebugSection(title: "All Profiles (\(allProfiles.count))") {
+                VStack(alignment: .leading, spacing: 16) {
+                  ForEach(allProfiles) { profile in
+                    VStack(alignment: .leading, spacing: 8) {
+                      Text(profile.name)
+                        .font(.headline)
 
-                    if let schedule = profile.schedule {
-                      ScheduleDebugCard(schedule: schedule)
-                    }
+                      ProfileDebugCard(profile: profile)
 
-                    DebugSection(title: "Selected Activity") {
-                      SelectedActivityDebugCard(selection: profile.selectedActivity)
-                    }
+                      if let schedule = profile.schedule {
+                        ScheduleDebugCard(schedule: schedule)
+                      }
 
-                    if let domains = profile.domains, !domains.isEmpty {
-                      DebugSection(title: "Domains (\(domains.count))") {
-                        DomainsDebugCard(domains: domains)
+                      DebugSection(title: "Selected Activity") {
+                        SelectedActivityDebugCard(selection: profile.selectedActivity)
+                      }
+
+                      if let domains = profile.domains, !domains.isEmpty {
+                        DebugSection(title: "Domains (\(domains.count))") {
+                          DomainsDebugCard(domains: domains)
+                        }
                       }
                     }
-                  }
-                  .padding(.vertical, 8)
+                    .padding(.vertical, 8)
 
-                  if profile.id != allProfiles.last?.id {
-                    Divider()
+                    if profile.id != allProfiles.last?.id {
+                      Divider()
+                    }
                   }
                 }
               }
             }
           }
+          .padding()
         }
-        .padding()
       }
       .navigationTitle("Debug Mode")
+      .toolbarBackground(.hidden, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button(action: { dismiss() }) {
@@ -307,5 +312,6 @@ struct DebugView: View {
 #Preview {
   DebugView()
     .environmentObject(StrategyManager.shared)
+    .environmentObject(ThemeManager.shared)
     .modelContainer(for: [BlockedProfiles.self, BlockedProfileSession.self], inMemory: true)
 }

@@ -8,70 +8,76 @@ struct ChartConfigurationSheet: View {
 
   var body: some View {
     NavigationStack {
-      List {
-        Section("Visibility") {
-          Toggle("Show Chart", isOn: $showHabitTracker)
-            .tint(themeManager.themeColor)
-        }
-        .listRowInsets(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+      ZStack {
+        GlassPageBackground()
 
-        Section("Chart Type") {
-          ForEach(HabitChartType.allCases, id: \.self) { type in
-            Button {
-              chartType = type
-            } label: {
-              HStack(alignment: .top, spacing: 12) {
-                ZStack {
-                  Circle()
-                    .stroke(
-                      chartType == type ? themeManager.themeColor : Color.gray.opacity(0.4),
-                      lineWidth: 2
-                    )
-                    .frame(width: 22, height: 22)
+        List {
+          Section("Visibility") {
+            Toggle("Show Chart", isOn: $showHabitTracker)
+              .tint(themeManager.themeColor)
+          }
+          .listRowInsets(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
 
-                  if chartType == type {
+          Section("Chart Type") {
+            ForEach(HabitChartType.allCases, id: \.self) { type in
+              Button {
+                chartType = type
+              } label: {
+                HStack(alignment: .top, spacing: 12) {
+                  ZStack {
                     Circle()
-                      .fill(themeManager.themeColor)
-                      .frame(width: 12, height: 12)
+                      .stroke(
+                        chartType == type ? themeManager.themeColor : Color.secondary.opacity(0.32),
+                        lineWidth: 2
+                      )
+                      .frame(width: 22, height: 22)
+
+                    if chartType == type {
+                      Circle()
+                        .fill(themeManager.themeColor)
+                        .frame(width: 12, height: 12)
+                    }
                   }
-                }
-                .padding(.top, 2)
+                  .padding(.top, 2)
 
-                VStack(alignment: .leading, spacing: 4) {
-                  HStack(spacing: 8) {
-                    Image(systemName: type.icon)
-                      .foregroundStyle(themeManager.themeColor)
-                      .font(.system(size: 16))
+                  VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 8) {
+                      Image(systemName: type.icon)
+                        .foregroundStyle(themeManager.themeColor)
+                        .font(.system(size: 16))
 
-                    Text(type.rawValue)
-                      .font(.system(size: 16, weight: .medium))
-                      .foregroundStyle(.primary)
+                      Text(type.rawValue)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(.primary)
+                    }
+
+                    Text(type.description)
+                      .font(.system(size: 13))
+                      .foregroundStyle(.secondary)
+                      .multilineTextAlignment(.leading)
+                      .fixedSize(horizontal: false, vertical: true)
                   }
 
-                  Text(type.description)
-                    .font(.system(size: 13))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
+                  Spacer()
                 }
-
-                Spacer()
+                .padding(.vertical, 6)
               }
-              .padding(.vertical, 4)
+              .buttonStyle(.plain)
+              .listRowSeparator(.hidden)
             }
-            .buttonStyle(.plain)
-            .listRowSeparator(.hidden)
           }
         }
-      }
-      .navigationTitle("Manage chart")
-      .navigationBarTitleDisplayMode(.inline)
-      .toolbar {
-        ToolbarItem(placement: .topBarTrailing) {
-          Button {
-            onDismiss()
-          } label: {
-            Image(systemName: "checkmark")
+        .scrollContentBackground(.hidden)
+        .navigationTitle("Manage chart")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .toolbar {
+          ToolbarItem(placement: .topBarTrailing) {
+            Button {
+              onDismiss()
+            } label: {
+              Image(systemName: "checkmark")
+            }
           }
         }
       }

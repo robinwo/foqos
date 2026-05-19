@@ -7,51 +7,39 @@ struct ProfileStatsRow: View {
   let domainsCount: Int
 
   var body: some View {
-    HStack(spacing: 16) {
-      // Apps count
-      VStack(alignment: .leading, spacing: 2) {
-        Text("Apps & Categories")
-          .font(.caption)
-          .foregroundColor(.secondary)
-
-        Text(
-          "\(FamilyActivityUtil.countSelectedActivities(selectedActivity))"
-        )
-        .font(.subheadline)
-        .fontWeight(.semibold)
-      }
+    HStack(spacing: 12) {
+      statColumn(
+        title: "Apps & Categories",
+        value: "\(FamilyActivityUtil.countSelectedActivities(selectedActivity))"
+      )
 
       Divider()
         .frame(height: 24)
 
-      VStack(alignment: .leading, spacing: 2) {
-        Text("Domains")
-          .font(.caption)
-          .foregroundColor(.secondary)
-
-        Text(
-          "\(domainsCount)"
-        )
-        .font(.subheadline)
-        .fontWeight(.semibold)
-      }
+      statColumn(
+        title: "Domains",
+        value: "\(domainsCount)"
+      )
 
       Divider()
         .frame(height: 24)
 
-      // Active sessions
-      VStack(alignment: .leading, spacing: 2) {
-        Text("Total Sessions")
-          .font(.caption)
-          .foregroundColor(.secondary)
+      statColumn(
+        title: "Total Sessions",
+        value: sessionCount.description.localizedLowercase
+      )
+    }
+  }
 
-        Text(
-          sessionCount.description
-            .localizedLowercase
-        )
+  private func statColumn(title: String, value: String) -> some View {
+    VStack(alignment: .leading, spacing: 2) {
+      Text(title)
+        .font(.caption)
+        .foregroundColor(.secondary)
+
+      Text(value)
         .font(.subheadline)
         .fontWeight(.semibold)
-      }
     }
   }
 }
@@ -63,5 +51,5 @@ struct ProfileStatsRow: View {
     domainsCount: 12
   )
   .padding()
-  .background(Color(.systemGroupedBackground))
+  .background(Color(hex: "#f3efe8"))
 }

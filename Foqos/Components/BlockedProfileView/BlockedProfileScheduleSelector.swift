@@ -13,31 +13,48 @@ struct BlockedProfileScheduleSelector: View {
   private var daysCount: Int { schedule.days.count }
 
   var body: some View {
-    Button(action: buttonAction) {
-      HStack {
-        Text(buttonText)
-          .foregroundStyle(themeManager.themeColor)
-        Spacer()
-        Image(systemName: "chevron.right")
-          .foregroundStyle(.gray)
+    VStack(alignment: .leading, spacing: 8) {
+      Button(action: buttonAction) {
+        HStack {
+          VStack(alignment: .leading, spacing: 3) {
+            Text(buttonText)
+              .foregroundStyle(disabled ? .secondary : themeManager.themeColor)
+              .font(.subheadline.weight(.semibold))
+            Text("Recurring schedule")
+              .font(.caption)
+              .foregroundStyle(.secondary)
+          }
+
+          Spacer()
+          Image(systemName: "chevron.right")
+            .foregroundStyle(.gray)
+        }
+      }
+      .disabled(disabled)
+      .padding(.horizontal, 14)
+      .padding(.vertical, 12)
+      .glassSurface(
+        cornerRadius: 18,
+        tint: themeManager.themeColor,
+        strokeOpacity: 0.08,
+        shadowOpacity: 0.03
+      )
+
+      if let disabledText = disabledText, disabled {
+        Text(disabledText)
+          .foregroundStyle(.red)
+          .font(.caption)
+      } else if daysCount == 0 {
+        Text("No schedule set")
+          .font(.footnote)
+          .foregroundStyle(.secondary)
+      } else {
+        Text(schedule.summaryText)
+          .font(.footnote)
+          .foregroundStyle(.secondary)
       }
     }
-    .disabled(disabled)
-
-    if let disabledText = disabledText, disabled {
-      Text(disabledText)
-        .foregroundStyle(.red)
-        .padding(.top, 4)
-        .font(.caption)
-    } else if daysCount == 0 {
-      Text("No Schedule Set")
-        .foregroundStyle(.gray)
-    } else {
-      Text(schedule.summaryText)
-        .font(.footnote)
-        .foregroundStyle(.gray)
-        .padding(.top, 4)
-    }
+    .padding(.vertical, 4)
   }
 }
 

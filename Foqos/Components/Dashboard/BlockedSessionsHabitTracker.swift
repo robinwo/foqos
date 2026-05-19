@@ -143,7 +143,7 @@ struct BlockedSessionsHabitTracker: View {
   }
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 10) {
+    VStack(alignment: .leading, spacing: 14) {
       HStack(alignment: .center) {
         SectionTitle(
           "Activity",
@@ -155,9 +155,6 @@ struct BlockedSessionsHabitTracker: View {
 
       ZStack {
         if showHabitTracker {
-          RoundedRectangle(cornerRadius: 24)
-            .fill(Color(.systemBackground))
-
           VStack(alignment: .leading, spacing: 0) {
             chartContent
               .padding(chartType == .fourWeek ? 0 : 16)
@@ -180,12 +177,15 @@ struct BlockedSessionsHabitTracker: View {
               )
             }
           }
+          .padding(.vertical, 4)
+          .glassSurface(
+            cornerRadius: 28,
+            tint: themeManager.themeColor,
+            strokeOpacity: 0.08,
+            shadowOpacity: 0.05
+          )
         }
       }
-      .overlay(
-        RoundedRectangle(cornerRadius: 24)
-          .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-      )
       .animation(.easeInOut(duration: 0.3), value: showHabitTracker)
       .animation(.easeInOut(duration: 0.3), value: chartType)
       .frame(height: showHabitTracker ? nil : 0, alignment: .top)

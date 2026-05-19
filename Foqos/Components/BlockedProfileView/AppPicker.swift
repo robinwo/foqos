@@ -2,6 +2,8 @@ import FamilyControls
 import SwiftUI
 
 struct AppPicker: View {
+  @EnvironmentObject var themeManager: ThemeManager
+
   let stateUpdateTimer = Timer.publish(every: 1, on: .main, in: .common)
     .autoconnect()
 
@@ -42,73 +44,80 @@ struct AppPicker: View {
 
   var body: some View {
     NavigationStack {
-      VStack(alignment: .leading, spacing: 12) {
-        ZStack {
-          Text(verbatim: "Updating view state because of bug in iOS...")
-            .foregroundStyle(.clear)
-            .accessibilityHidden(true)
-            .opacity(updateFlag ? 1 : 0)
+      ZStack {
+        GlassPageBackground()
 
-          FamilyActivityPicker(selection: $selection)
-            .id(refreshID)
-        }
+        VStack(alignment: .leading, spacing: 12) {
+          ZStack {
+            Text(verbatim: "Updating view state because of bug in iOS...")
+              .foregroundStyle(.clear)
+              .accessibilityHidden(true)
+              .opacity(updateFlag ? 1 : 0)
 
-        // Compact info section
-        Button(action: {
-          withAnimation(.easeInOut(duration: 0.2)) {
-            isMessageExpanded.toggle()
+            FamilyActivityPicker(selection: $selection)
+              .id(refreshID)
           }
-        }) {
-          VStack(alignment: .leading, spacing: 10) {
-            HStack {
-              VStack(alignment: .leading, spacing: 4) {
-                Text(compactTitle)
-                  .font(.subheadline)
-                  .bold()
-                  .foregroundColor(.primary)
 
-                if !isMessageExpanded {
-                  Text("Tap for details")
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-                }
-              }
-
-              Spacer()
-
-              Image(systemName: isMessageExpanded ? "chevron.up.circle.fill" : "info.circle")
-                .font(.title3)
-                .foregroundColor(.secondary)
+          Button(action: {
+            withAnimation(.easeInOut(duration: 0.2)) {
+              isMessageExpanded.toggle()
             }
-
-            if isMessageExpanded {
-              VStack(alignment: .leading, spacing: 12) {
-                Divider()
-
-                VStack(alignment: .leading, spacing: 6) {
-                  Text("Apple's 50 App Limit")
-                    .font(.caption)
+          }) {
+            VStack(alignment: .leading, spacing: 10) {
+              HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                  Text(compactTitle)
+                    .font(.subheadline)
                     .bold()
-                    .foregroundColor(.secondary)
-
-                  Text(detailedMessage)
-                    .font(.caption)
                     .foregroundColor(.primary)
-                    .fixedSize(horizontal: false, vertical: true)
+
+                  if !isMessageExpanded {
+                    Text("Tap for details")
+                      .font(.caption2)
+                      .foregroundColor(.secondary)
+                  }
+                }
+
+                Spacer()
+
+                Image(systemName: isMessageExpanded ? "chevron.up.circle.fill" : "info.circle")
+                  .font(.title3)
+                  .foregroundColor(.secondary)
+              }
+
+              if isMessageExpanded {
+                VStack(alignment: .leading, spacing: 12) {
+                  Divider()
+
+                  VStack(alignment: .leading, spacing: 6) {
+                    Text("Apple's 50 App Limit")
+                      .font(.caption)
+                      .bold()
+                      .foregroundColor(.secondary)
+
+                    Text(detailedMessage)
+                      .font(.caption)
+                      .foregroundColor(.primary)
+                      .fixedSize(horizontal: false, vertical: true)
+                  }
                 }
               }
             }
+            .padding(14)
+            .glassSurface(
+              cornerRadius: 18,
+              tint: themeManager.themeColor,
+              strokeOpacity: 0.14
+            )
+            .padding(.horizontal, 16)
           }
-          .padding(12)
-          .background(Color(.systemGray6))
-          .cornerRadius(10)
-          .padding(.horizontal, 16)
+          .buttonStyle(.plain)
         }
-        .buttonStyle(.plain)
       }
       .onReceive(stateUpdateTimer) { _ in
         updateFlag.toggle()
       }
+      .toolbarBackground(.hidden, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           Button(action: { refreshID = UUID() }) {
@@ -145,6 +154,7 @@ struct AppPicker: View {
         selection: .constant(FamilyActivitySelection()),
         isPresented: .constant(true)
       )
+      .environmentObject(ThemeManager.shared)
     }
   }
 #endif
