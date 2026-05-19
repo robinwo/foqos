@@ -71,7 +71,7 @@ struct WelcomeIntroScreen: View {
           .rotationEffect(.degrees(orbitRotation + 270))
           .opacity(showIcons ? 1 : 0)
 
-        // Foqos sticker logo (center/sun)
+        // Pause sticker logo (center/sun)
         Image("FoqosStickerLogo")
           .resizable()
           .scaledToFit()

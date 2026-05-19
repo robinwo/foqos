@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./images/foqos-app-icon.png" width="250" style="border-radius: 40px;" alt="Foqos app icon">
+  <img src="./images/foqos-app-icon.png" width="250" style="border-radius: 40px;" alt="Pause app icon">
 </p>
 
 <p align="center">
@@ -82,9 +82,9 @@ Automate triggering Pause profiles with iOS Shortcuts. Note that you'll need to 
 
 Enhance your Pause setup with a 3D printable brick or keychain, compatible with 25mm NFC tags:
 
-- [Foqos NFC Brick & Keychain on Printables](https://www.printables.com/model/1537982-foqos-nfc-brick-keychain)
+- [Pause NFC Brick & Keychain on Printables](https://www.printables.com/model/1537982-foqos-nfc-brick-keychain)
 
-<img width="500" alt="3D printable Foqos NFC brick and keychain" src="/images/foqos-brick-keychain.png" />
+<img width="500" alt="3D printable Pause NFC brick and keychain" src="/images/foqos-brick-keychain.png" />
 
 ## 🛠️ Development
 
